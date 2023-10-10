@@ -1,0 +1,16 @@
+http:
+  routers:
+    nginx-laptop-svc:
+      rule: "Host(`{{env "DOMAINNAME_CLOUD_SERVER"}}`)"
+      entryPoints:
+        - https
+      middlewares:
+        - chain-no-auth
+      service: nginx-laptop-svc
+      tls:
+        certResolver: dns-cloudflare
+  services:
+    nginx-laptop-svc:
+      loadBalancer:
+        servers:
+          - url: "http://10.16.0.233:80"  # or whatever your external host's IP:port is
